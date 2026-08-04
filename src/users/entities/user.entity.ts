@@ -14,31 +14,31 @@ import {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  username: string;
+  username!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column()
-  password: string;
+  password!: string;
 
   @Column()
-  balance: number;
+  balance!: number;
 
   @CreateDateColumn()
-  createdAt: string;
+  createdAt!: string;
 
   @UpdateDateColumn()
-  updatedAt: string;
+  updatedAt!: string;
 
   @OneToMany((type) => TransactionEntity, (transaction) => transaction.id)
   @JoinColumn()
-  transaction: TransactionEntity[];
+  transaction!: TransactionEntity[];
 
   @OneToMany((type) => RecurrenceEntity, (recurrence) => recurrence.id)
   @JoinColumn()
-  recurrence: RecurrenceEntity[];
+  recurrence!: RecurrenceEntity[];
 }

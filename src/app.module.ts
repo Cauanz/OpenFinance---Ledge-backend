@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
       synchronize: true, //REMOVE IN PROD
       database: 'db.sqlite',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      autoLoadEntities: true,
     }),
     UsersModule,
   ],
