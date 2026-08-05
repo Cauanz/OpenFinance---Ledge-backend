@@ -5,9 +5,12 @@ import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User> {}
+  constructor(private userService: UsersService) {}
 
   async signUp(username, email, password: string): Promise<any> {
-    const user = await this.usersService.findOne(email);
+    // TODO - TERMINAR ESSA FUNÇÃO
+    const user = await this.usersService.findByEmail(email);
   }
+
+  // TODO - CRIAR FUNÇÃO DE VALIDAÇÃO DE USER E LOGIN
 }
