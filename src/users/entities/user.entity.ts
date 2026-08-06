@@ -1,4 +1,5 @@
-import { DefaultValuePipe } from '@nestjs/common';
+import { Recurrences } from 'src/recurrences/entities/recurrences.entity';
+import { Transactions } from 'src/transactions/entities/transaction.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,8 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-// TODO - CONTINUAR CRIANDO ENTIDADES, E CRIAR MODULOS E TUDO MAIS DAS OUTRAS ENTIDADES
-
+//TODO - TERMINAR DE FORMATAR E ADICIONAR OQUE FALTA E FAZER AS FUNÇÕES
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -25,7 +25,7 @@ export class User {
   @Column()
   password!: string;
 
-  @Column()
+  @Column({ default: 0 })
   balance!: number;
 
   @CreateDateColumn()
@@ -34,11 +34,11 @@ export class User {
   @UpdateDateColumn()
   updatedAt!: string;
 
-  @OneToMany((type) => TransactionEntity, (transaction) => transaction.id)
+  @OneToMany((type) => Transactions, (transaction) => transaction.id)
   @JoinColumn()
-  transaction!: TransactionEntity[];
+  transactions!: Transactions[];
 
-  @OneToMany((type) => RecurrenceEntity, (recurrence) => recurrence.id)
+  @OneToMany((type) => Recurrences, (recurrence) => recurrence.id)
   @JoinColumn()
-  recurrence!: RecurrenceEntity[];
+  recurrences!: Recurrences[];
 }

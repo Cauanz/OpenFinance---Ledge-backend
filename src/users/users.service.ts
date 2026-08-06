@@ -16,12 +16,19 @@ export class UsersService {
     });
   }
 
-  // async create(email, username, password: string): Promise<User | null> {
-  //   const salt = genSaltSync(10);
-  //   const hashPass = hashSync(password, salt);
+  async create(email: string, username: string, password: string) {
+    const salt = genSaltSync(10);
+    const hashPass = hashSync(password, salt);
 
-  //   const user = this.usersRepository.create({ email, username, hashPass });
+    const user = this.usersRepository.create({
+      email,
+      username,
+      hashPass,
+      transactions: [],
+      recurrences: [],
+      createdAt,
+    });
 
-  //   return this.usersRepository.save(user);
-  // }
+    await this.usersRepository.save(user);
+  }
 }
