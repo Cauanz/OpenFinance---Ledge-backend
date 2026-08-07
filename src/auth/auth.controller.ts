@@ -18,6 +18,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInData: Record<string, any>) {
-    return [];
+    return this.authService.signIn(signInData.email, signInData.password);
   }
 }

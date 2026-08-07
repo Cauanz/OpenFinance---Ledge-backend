@@ -1,12 +1,14 @@
-import { HttpCode, Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { User } from '../users/entities/user.entity';
 import bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
@@ -38,17 +40,17 @@ export class AuthService {
     await this.userService.create(email, username, password);
   }
 
-  async logIn(email: string, password: string): Promise<any> {
+  async signIn(email: string, password: string): Promise<any> {
     const user = await this.validateUser(email, password);
 
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    //TODO - TROCAR RETORNO POR JWT
+    const payload = { sub: user.id, username: user.username };
+
     return {
-      message: 'Login successful',
-      userId: user.id,
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 }
