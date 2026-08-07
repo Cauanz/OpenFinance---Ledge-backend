@@ -26,7 +26,6 @@ export class UsersService {
       hashPass,
       transactions: [],
       recurrences: [],
-      createdAt,
     });
 
     await this.usersRepository.save(user);

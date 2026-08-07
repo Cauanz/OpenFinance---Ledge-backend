@@ -10,7 +10,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-//TODO - TERMINAR DE FORMATAR E ADICIONAR OQUE FALTA E FAZER AS FUNÇÕES
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
