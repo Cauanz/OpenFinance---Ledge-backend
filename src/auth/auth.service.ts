@@ -34,7 +34,7 @@ export class AuthService {
     const user = await this.userService.findByEmail(email);
 
     if (user) {
-      return 'algum erro';
+      throw new UnauthorizedException();
     }
 
     await this.userService.create(email, username, password);

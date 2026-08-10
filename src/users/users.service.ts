@@ -23,7 +23,7 @@ export class UsersService {
     const user = this.usersRepository.create({
       email,
       username,
-      hashPass,
+      password: hashPass,
       transactions: [],
       recurrences: [],
     });
