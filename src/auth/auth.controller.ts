@@ -1,9 +1,11 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-type UserType = {
-  //TODO - FAZER TIPO DO USER
-};
+// type UserType = {
+//   id:
+// };
+
+// TODO - auth terminado e funcionando até onde sei
 
 @Controller('auth')
 export class AuthController {

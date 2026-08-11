@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { RecurrencesModule } from './recurrences/recurrences.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     UsersModule,
     RecurrencesModule,
     TransactionsModule,
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
