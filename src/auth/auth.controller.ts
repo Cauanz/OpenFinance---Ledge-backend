@@ -5,8 +5,6 @@ import { AuthService } from './auth.service';
 //   id:
 // };
 
-// TODO - auth terminado e funcionando até onde sei
-
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
