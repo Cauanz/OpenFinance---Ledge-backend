@@ -21,16 +21,18 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Post('c')
-  createTransaction(@Body() reqBody) {
-    // const createObj = {
-    //   user_id,
-    //   title,
-    //   amount,
-    //   type,
-    //   date,
-    //   status,
-    //   recurrence_id, //optional
-    // }
+  createTransaction(
+    @Body() reqBody: Record<string, any>,
+    @Req() requestData: Record<string, any>,
+  ) {
+    const createObj = {
+      user_id,
+      title: reqBody.title,
+      amount: reqBody.amount,
+      type: reqBody.type,
+      status: reqBody.status,
+      recurrence_id, //optional
+    };
     //TODO - TERMINAR AS FUNÇÕES E ROTAS DO TRANSACTION E RECURRENCES
   }
 
