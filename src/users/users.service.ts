@@ -16,6 +16,14 @@ export class UsersService {
     });
   }
 
+  async findById(id: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
+
   async create(email: string, username: string, password: string) {
     const salt = genSaltSync(10);
     const hashPass = hashSync(password, salt);
