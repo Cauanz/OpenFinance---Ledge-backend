@@ -1,8 +1,10 @@
+import { Transactions } from 'src/transactions/entities/transaction.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -12,9 +14,12 @@ export class Recurrences {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @OneToMany((type) => User, (user) => user.id)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.recurrences)
+  @JoinColumn({ name: 'user_id' })
   user_id!: User;
+
+  @OneToMany(() => Transactions, (transaction) => transaction.recurrence_id)
+  transactions!: Transactions[];
 
   @Column()
   title!: string;

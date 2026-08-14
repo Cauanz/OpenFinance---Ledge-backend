@@ -14,8 +14,8 @@ export class Transactions {
   @PrimaryGeneratedColumn()
   id!: string;
 
-  @ManyToOne((type) => User, (user) => user.id)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.transactions, { nullable: false })
+  @JoinColumn({ name: 'user_id' })
   user_id!: User;
 
   @Column()
@@ -27,16 +27,18 @@ export class Transactions {
   @Column()
   type!: string;
 
-  @Column()
+  @CreateDateColumn({ name: 'date' })
   date!: Date;
 
   @Column()
   status!: string;
 
-  @ManyToOne((type) => Recurrences, (recurreces) => recurreces.id)
-  @JoinColumn()
-  recurrence_id!: Recurrences;
+  @ManyToOne(() => Recurrences, (recurrece) => recurrece.transactions, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'recurrence_id' })
+  recurrence_id!: Recurrences | null;
 
-  @CreateDateColumn()
-  createdAt!: string;
+  @CreateDateColumn({ name: 'created_at' })
+  created_at!: Date;
 }
