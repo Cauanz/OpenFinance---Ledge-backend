@@ -2,13 +2,10 @@ import {
   Body,
   Controller,
   Get,
-  Head,
-  Headers,
   NotFoundException,
   Param,
   Patch,
   Post,
-  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -19,19 +16,29 @@ import { TransactionsService } from './transactions.service';
 export class TransactionsController {
   constructor(private readonly transactionServices: TransactionsService) {}
 
+  //ESSA ROTA SÓ PODE SER USADA PARA DEBUG JÁ QUE A ROTA REAL SÓ PODE PEGAR TODAS AS TRANSAÇÕES DE X USUÁRIO
   @UseGuards(AuthGuard)
-  @Post('c')
-  createTransaction(
-    @Body() bodyData: Record<string, any>,
-    @Req() requestData: Record<string, any>,
-  ) {
-    return this.transactionServices.createTransaction(bodyData, requestData);
-    //TODO - TERMINAR AS FUNÇÕES E ROTAS DO TRANSACTION E RECURRENCES
+  @Get()
+  getAllTransactions() {
+    return this.transactionServices.getAllTransactions();
   }
 
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  getUserTransactions() {
+    return this.transactionServices.getUserTransactions(id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('c')
+  createTransaction(@Body() bodyData, @Req() requestData) {
+    return this.transactionServices.createTransaction(bodyData, requestData);
+  }
+
+  @UseGuards(AuthGuard)
   @Patch(':id')
   editTransaction(@Body() data: Record<string, any>, @Param() params: any) {
-    const id: string = params.id;
+    const id = params.id;
 
     if (!id) {
       throw new NotFoundException('Missing Id!');

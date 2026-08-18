@@ -30,10 +30,10 @@ export class User {
   @UpdateDateColumn()
   updatedAt!: string;
 
-  @OneToMany(() => Transactions, (transaction) => transaction.user)
+  @OneToMany(() => Transactions, (transaction) => transaction.user_id)
   transactions!: Transactions[];
 
-  @OneToMany((type) => Recurrences, (recurrence) => recurrence.id)
+  @OneToMany(() => Recurrences, (recurrence) => recurrence.id)
   @JoinColumn()
   recurrences!: Recurrences[];
 }

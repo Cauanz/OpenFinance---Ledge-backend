@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
+import { Recurrences } from 'src/recurrences/entities/recurrences.entity';
 
 type TransactinObj = {
   id: string;
@@ -17,7 +18,7 @@ type TransactinObj = {
   type: string;
   date: Date;
   status: string;
-  recurrence_id: string;
+  recurrence_id: Recurrences | null;
   created_at: Date;
 };
 
@@ -33,7 +34,7 @@ type CreateTransactionBody = {
   type: string;
   date: Date;
   status: string;
-  recurrence_id: string | null;
+  recurrence_id: Recurrences | null;
 };
 
 @Injectable()
@@ -44,33 +45,38 @@ export class TransactionsService {
     private readonly usersService: UsersService,
   ) {}
 
+  async getAllTransactions(): Promise<Transactions[] | null> {
+    return this.transactionsRepo.find();
+  }
+
   async getTransaction(id: string): Promise<Transactions | null> {
     return this.transactionsRepo.findOne({
       where: { id: id },
     });
   }
 
-  async createTransaction(reqData: AuthObj, bodyData: CreateTransactionBody) {
-    const user = await this.usersService.findByUsername(reqData.user.username);
+  async getUserTransactions(id: string): Promise<Transactions | null> {
+    return this.transactionsRepo.findOne({
+      // TODO - CONSERTAR ISSO, E PEGAR O ID DO USER PARA TESTAR
+      where: { user_id: id },
+    });
+  }
+
+  async createTransaction(reqData: CreateTransactionBody, bodyData: AuthObj) {
+    const user = await this.usersService.findByUsername(bodyData.user.username);
 
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
 
-    const newT: TransactinObj = {
-      user_id: { id: user.id },
-      title: bodyData.title,
-      amount: bodyData.amount,
-      type: bodyData.type,
-      status: bodyData.status,
-      ...(bodyData.recurrence_id && {
-        recurrence: { id: bodyData.recurrence_id },
-      }),
-    };
+    const newT: TransactinObj = this.transactionsRepo.create({
+      ...reqData,
+      user_id: user,
+    });
 
-    const t = this.transactionsRepo.create(newT);
+    const t = await this.transactionsRepo.save(newT);
 
-    return this.transactionsRepo.save(t);
+    return t;
   }
 
   async updateTransaction(id: string, data: Partial<Transactions>) {
