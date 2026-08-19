@@ -24,11 +24,21 @@ export class TransactionsController {
   }
 
   @UseGuards(AuthGuard)
-  @Get(':id')
-  getUserTransactions(@Param() params: any) {
-    const id = params.id;
-    if (typeof id === 'string') {
-      return this.transactionServices.getUserTransactions(id);
+  @Get('u/:user_id')
+  getUserTransactions(@Param('user_id') user_id: string) {
+    // TODO - ROTA NÃO RETORNANDO RESPOSTA NEM ERRO
+    if (typeof user_id === 'string') {
+      const ts = this.transactionServices.getUserTransactions(user_id);
+      console.log(ts);
+      return ts;
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('s/:id')
+  getTransaction(@Param('id') t_id: string) {
+    if (typeof t_id === 'string') {
+      return this.transactionServices.getTransaction(t_id);
     }
   }
 
@@ -40,13 +50,14 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  editTransaction(@Body() data: Record<string, any>, @Param() params: any) {
-    const id = params.id;
-
-    if (!id) {
+  editTransaction(
+    @Body() data: Record<string, any>,
+    @Param('id') t_id: string,
+  ) {
+    if (!t_id) {
       throw new NotFoundException('Missing Id!');
     }
 
-    return this.transactionServices.updateTransaction(id, data);
+    return this.transactionServices.updateTransaction(t_id, data);
   }
 }
