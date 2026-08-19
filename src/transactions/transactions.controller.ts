@@ -25,8 +25,11 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  getUserTransactions() {
-    return this.transactionServices.getUserTransactions(id);
+  getUserTransactions(@Param() params: any) {
+    const id = params.id;
+    if (typeof id === 'string') {
+      return this.transactionServices.getUserTransactions(id);
+    }
   }
 
   @UseGuards(AuthGuard)

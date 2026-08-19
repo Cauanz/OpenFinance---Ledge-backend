@@ -55,10 +55,14 @@ export class TransactionsService {
     });
   }
 
-  async getUserTransactions(id: string): Promise<Transactions | null> {
-    return this.transactionsRepo.findOne({
-      // TODO - CONSERTAR ISSO, E PEGAR O ID DO USER PARA TESTAR
-      where: { user_id: id },
+  async getUserTransactions(userId: string): Promise<Transactions[]> {
+    return this.transactionsRepo.find({
+      where: {
+        user_id: {
+          id: userId,
+        },
+      },
+      relations: ['user_id', 'recurrence_id'],
     });
   }
 
