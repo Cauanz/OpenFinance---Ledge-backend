@@ -45,6 +45,8 @@ export class TransactionsService {
     private readonly usersService: UsersService,
   ) {}
 
+  //TODO - CRIAR FUNÇÃO findall PARA O ENDPOINT COM QUERY
+
   async getAllTransactions(): Promise<Transactions[] | null> {
     return this.transactionsRepo.find();
   }

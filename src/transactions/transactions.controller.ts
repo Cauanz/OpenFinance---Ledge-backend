@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { TransactionsService } from './transactions.service';
+import { TransactionFilterDto } from './transaction-filters.dto';
 
 @Controller('t')
 export class TransactionsController {
@@ -26,10 +28,8 @@ export class TransactionsController {
   @UseGuards(AuthGuard)
   @Get('u/:user_id')
   getUserTransactions(@Param('user_id') user_id: string) {
-    // TODO - ROTA NÃO RETORNANDO RESPOSTA NEM ERRO
     if (typeof user_id === 'string') {
       const ts = this.transactionServices.getUserTransactions(user_id);
-      console.log(ts);
       return ts;
     }
   }
@@ -59,5 +59,10 @@ export class TransactionsController {
     }
 
     return this.transactionServices.updateTransaction(t_id, data);
+  }
+
+  @Get()
+  findAll(@Query() filters: TransactionFilterDto) {
+    return this.transactionServices.findAll(filters);
   }
 }
