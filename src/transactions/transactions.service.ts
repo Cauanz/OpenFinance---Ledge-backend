@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
 import { Recurrences } from 'src/recurrences/entities/recurrences.entity';
+import { TransactionFilterDto } from './transaction-filters.dto';
 
 type TransactinObj = {
   id: string;
@@ -34,7 +35,7 @@ type CreateTransactionBody = {
   type: string;
   date: Date;
   status: string;
-  recurrence_id: Recurrences | null;
+  recurrence_id: string | null;
 };
 
 @Injectable()
@@ -45,7 +46,35 @@ export class TransactionsService {
     private readonly usersService: UsersService,
   ) {}
 
-  //TODO - CRIAR FUNÇÃO findall PARA O ENDPOINT COM QUERY
+  async findall(filters: TransactionFilterDto) {
+    const { period } = filters;
+
+    const now = new Date();
+
+    let startDate: Date | undefined;
+
+    if (period === 'today') {
+      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    }
+
+    if (period === 'week') {
+      startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    }
+
+    if (period === 'month') {
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    }
+
+    if (period === 'year') {
+      startDate = new Date(now.getFullYear(), 0, 1);
+    }
+
+    return this.transactionsRepo.find({
+      where: {
+        created_at: startDate,
+      },
+    });
+  }
 
   async getAllTransactions(): Promise<Transactions[] | null> {
     return this.transactionsRepo.find();
@@ -75,9 +104,14 @@ export class TransactionsService {
       throw new UnauthorizedException('User not found');
     }
 
+    //TODO - TERMINAR ISSO NO RECURRENCES PARA PODER USAR AQUI E MUDAR A CRIAÇÃO ABAIXO PARA OQUE ESTÁ COMENTADO
+    // const recurrece = bodyData.recurrence_id ? await this.recurrencesRepo.findOne({ where: {id: Number(bodyData.recurrence_id)}}) : null;
+
     const newT: TransactinObj = this.transactionsRepo.create({
       ...reqData,
       user_id: user,
+      recurrence_id: null,
+      // recurrence_id: recurrence
     });
 
     const t = await this.transactionsRepo.save(newT);
@@ -95,5 +129,11 @@ export class TransactionsService {
     Object.assign(t, data);
 
     return this.transactionsRepo.save(t);
+  }
+
+  async deleteTransaction(t_id: string) {
+    return this.transactionsRepo.delete({
+      id: t_id,
+    });
   }
 }

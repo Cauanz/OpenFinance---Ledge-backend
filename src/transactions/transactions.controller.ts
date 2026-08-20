@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -63,6 +64,13 @@ export class TransactionsController {
 
   @Get()
   findAll(@Query() filters: TransactionFilterDto) {
-    return this.transactionServices.findAll(filters);
+    return this.transactionServices.findall(filters);
+  }
+
+  //TODO - ROTA AINDA NÃO FUNCIONANDO
+  @UseGuards(AuthGuard)
+  @Delete('d/:id')
+  deleteTransaction(@Param('t_id') t_id: string) {
+    return this.transactionServices.deleteTransaction(t_id);
   }
 }
