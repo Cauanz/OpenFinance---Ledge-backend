@@ -67,9 +67,8 @@ export class TransactionsController {
     return this.transactionServices.findall(filters);
   }
 
-  //TODO - ROTA AINDA NÃO FUNCIONANDO
   @UseGuards(AuthGuard)
-  @Delete('d/:id')
+  @Delete('d/:t_id')
   deleteTransaction(@Param('t_id') t_id: string) {
     return this.transactionServices.deleteTransaction(t_id);
   }

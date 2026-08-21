@@ -43,6 +43,8 @@ export class TransactionsService {
   constructor(
     @InjectRepository(Transactions)
     private transactionsRepo: Repository<Transactions>,
+    @InjectRepository(Recurrences)
+    private readonly recurrencesRepo: Repository<Recurrences>,
     private readonly usersService: UsersService,
   ) {}
 
@@ -104,14 +106,16 @@ export class TransactionsService {
       throw new UnauthorizedException('User not found');
     }
 
-    //TODO - TERMINAR ISSO NO RECURRENCES PARA PODER USAR AQUI E MUDAR A CRIAÇÃO ABAIXO PARA OQUE ESTÁ COMENTADO
-    // const recurrece = bodyData.recurrence_id ? await this.recurrencesRepo.findOne({ where: {id: Number(bodyData.recurrence_id)}}) : null;
+    const recurrence = reqData.recurrence_id
+      ? await this.recurrencesRepo.findOne({
+          where: { id: Number(reqData.recurrence_id) },
+        })
+      : null;
 
     const newT: TransactinObj = this.transactionsRepo.create({
       ...reqData,
       user_id: user,
-      recurrence_id: null,
-      // recurrence_id: recurrence
+      recurrence_id: recurrence,
     });
 
     const t = await this.transactionsRepo.save(newT);
@@ -132,8 +136,13 @@ export class TransactionsService {
   }
 
   async deleteTransaction(t_id: string) {
-    return this.transactionsRepo.delete({
-      id: t_id,
-    });
+    console.log(t_id);
+    const result = await this.transactionsRepo.delete({ id: t_id });
+
+    if (result.affected === 0) {
+      throw new NotFoundException('Transaction not found!');
+    }
+
+    return result;
   }
 }
