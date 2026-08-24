@@ -29,18 +29,19 @@ export class TransactionsController {
   @UseGuards(AuthGuard)
   @Get('u/:user_id')
   getUserTransactions(@Param('user_id') user_id: string) {
-    if (typeof user_id === 'string') {
-      const ts = this.transactionServices.getUserTransactions(user_id);
-      return ts;
+    if (!user_id) {
+      throw new NotFoundException('Missing Id!');
     }
+    return this.transactionServices.getUserTransactions(user_id);
   }
 
   @UseGuards(AuthGuard)
-  @Get('s/:id')
-  getTransaction(@Param('id') t_id: string) {
-    if (typeof t_id === 'string') {
-      return this.transactionServices.getTransaction(t_id);
+  @Get('s/:t_id')
+  getTransaction(@Param('t_id') t_id: string) {
+    if (!t_id) {
+      throw new NotFoundException('Missing Id!');
     }
+    return this.transactionServices.getTransaction(t_id);
   }
 
   @UseGuards(AuthGuard)
@@ -58,7 +59,6 @@ export class TransactionsController {
     if (!t_id) {
       throw new NotFoundException('Missing Id!');
     }
-
     return this.transactionServices.updateTransaction(t_id, data);
   }
 
@@ -70,6 +70,9 @@ export class TransactionsController {
   @UseGuards(AuthGuard)
   @Delete('d/:t_id')
   deleteTransaction(@Param('t_id') t_id: string) {
+    if (!t_id) {
+      throw new NotFoundException('Missing Id!');
+    }
     return this.transactionServices.deleteTransaction(t_id);
   }
 }

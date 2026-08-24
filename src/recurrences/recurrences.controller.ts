@@ -1,4 +1,11 @@
 import { Controller } from '@nestjs/common';
 
 @Controller('recurrences')
-export class RecurrencesController {}
+export class RecurrencesController {
+  //GET
+  //POST
+  //PATCH
+  //PATCH /RECPAUSE
+  //PATCH /RECPLAY
+  //DELETE
+}
