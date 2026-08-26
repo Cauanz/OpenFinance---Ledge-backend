@@ -14,7 +14,7 @@ export class Recurrences {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => User, (user) => user.recurrences)
+  @ManyToOne(() => User, (user) => user.recurrences, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user_id!: User;
 

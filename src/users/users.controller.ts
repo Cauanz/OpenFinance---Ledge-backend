@@ -38,5 +38,6 @@ export class UsersController {
   @Delete('/d/:u_id')
   deleteUser(@Param('u_id') u_id: string) {
     //TODO - FAZER FUNÇÃO DE DELETE
+    return this.UserService.deleteUser(u_id);
   }
 }

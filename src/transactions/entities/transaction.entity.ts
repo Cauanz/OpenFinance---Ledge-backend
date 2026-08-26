@@ -14,7 +14,10 @@ export class Transactions {
   @PrimaryGeneratedColumn()
   id!: string;
 
-  @ManyToOne(() => User, (user) => user.transactions, { nullable: false })
+  @ManyToOne(() => User, (user) => user.transactions, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user_id!: User;
 

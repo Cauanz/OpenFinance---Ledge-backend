@@ -136,7 +136,6 @@ export class TransactionsService {
   }
 
   async deleteTransaction(t_id: string) {
-    console.log(t_id);
     const result = await this.transactionsRepo.delete({ id: t_id });
 
     if (result.affected === 0) {
