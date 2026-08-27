@@ -108,7 +108,7 @@ export class TransactionsService {
 
     const recurrence = reqData.recurrence_id
       ? await this.recurrencesRepo.findOne({
-          where: { id: Number(reqData.recurrence_id) },
+          where: { id: String(reqData.recurrence_id) },
         })
       : null;
 
