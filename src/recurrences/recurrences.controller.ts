@@ -1,4 +1,12 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RecurrencesService } from './recurrences.service';
 
@@ -20,6 +28,10 @@ export class RecurrencesController {
   }
 
   //POST
+  @Post()
+  createRecurrence(@Body() bodyData, @Req() reqData) {
+    return this.recurrencesServices.createRecurrence(bodyData, reqData);
+  }
   //PATCH
   //PATCH /RECPAUSE
   //PATCH /RECPLAY
