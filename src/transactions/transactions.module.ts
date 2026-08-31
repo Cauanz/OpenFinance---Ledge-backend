@@ -6,7 +6,6 @@ import { Transactions } from './entities/transaction.entity';
 import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
 import { RecurrencesModule } from 'src/recurrences/recurrences.module';
-import { RecurrencesService } from 'src/recurrences/recurrences.service';
 
 @Module({
   controllers: [TransactionsController],

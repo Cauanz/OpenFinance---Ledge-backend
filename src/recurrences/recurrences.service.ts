@@ -25,6 +25,7 @@ export class RecurrencesService {
   constructor(
     @InjectRepository(Recurrences)
     private recurrencesRepo: Repository<Recurrences>,
+    // private usersRepo: Repository<User>,
     private readonly usersService: UsersService,
   ) {}
 
@@ -40,6 +41,7 @@ export class RecurrencesService {
     bodyData: AuthObj,
     reqData: CreateRecurrenceBody,
   ): Promise<Recurrences | null> {
+    console.log(bodyData);
     const user = await this.usersService.findByUsername(bodyData.user.username);
 
     if (!user) {
