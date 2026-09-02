@@ -32,8 +32,11 @@ export class RecurrencesController {
   createRecurrence(@Body() bodyData, @Req() reqData) {
     return this.recurrencesServices.createRecurrence(bodyData, reqData);
   }
+
   //PATCH
   //PATCH /RECPAUSE
   //PATCH /RECPLAY
+
   //DELETE
+  //TODO - FAZER ROTA DELETE ANTES
 }

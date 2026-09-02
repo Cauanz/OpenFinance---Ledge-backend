@@ -15,9 +15,9 @@ type CreateRecurrenceBody = {
   amount: number;
   type: string;
   frequency: string;
+  active: boolean;
   start_date: Date;
   end_date: Date;
-  active: boolean;
 };
 
 @Injectable()
@@ -38,18 +38,17 @@ export class RecurrencesService {
   }
 
   async createRecurrence(
-    bodyData: AuthObj,
-    reqData: CreateRecurrenceBody,
+    bodyData: CreateRecurrenceBody,
+    reqData: AuthObj,
   ): Promise<Recurrences | null> {
-    console.log(bodyData);
-    const user = await this.usersService.findByUsername(bodyData.user.username);
+    const user = await this.usersService.findByUsername(reqData.user.username);
 
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
 
     const newR = this.recurrencesRepo.create({
-      ...reqData,
+      ...bodyData,
       user_id: user,
     });
 
