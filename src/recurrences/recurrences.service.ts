@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Recurrences } from './entities/recurrences.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
+import { DeleteResult } from 'typeorm/browser';
 
 type AuthObj = {
   user: {
@@ -55,5 +56,17 @@ export class RecurrencesService {
     const r = await this.recurrencesRepo.save(newR);
 
     return r;
+  }
+
+  async deleteRecurrence(id: string): Promise<DeleteResult | null> {
+    const recurrence = await this.recurrencesRepo.findOne({ where: { id } });
+
+    if (!recurrence) {
+      throw new UnauthorizedException('Recurrence not found!');
+    }
+
+    const deleted = await this.recurrencesRepo.delete({ id });
+
+    return deleted;
   }
 }

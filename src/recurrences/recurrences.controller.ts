@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -38,5 +39,8 @@ export class RecurrencesController {
   //PATCH /RECPLAY
 
   //DELETE
-  //TODO - FAZER ROTA DELETE ANTES
+  @Delete('/d/:id')
+  deleteRecurrence(@Param('id') id: string) {
+    return this.recurrencesServices.deleteRecurrence(id);
+  }
 }
