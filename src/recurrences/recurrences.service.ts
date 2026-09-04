@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Recurrences } from './entities/recurrences.entity';
 import { Repository } from 'typeorm';
@@ -31,11 +35,24 @@ export class RecurrencesService {
   ) {}
 
   async getAllRecurrences() {
-    return this.recurrencesRepo.find();
+    const recurrences = await this.recurrencesRepo.find();
+    if (recurrences.length <= 0) {
+      throw new NotFoundException('No recurrences were found!');
+    }
+
+    return recurrences;
   }
 
   async getRecurrenceById(id: string): Promise<Recurrences | null> {
-    return this.recurrencesRepo.findOne({ where: { id: id } });
+    const recurrence = await this.recurrencesRepo.findOne({
+      where: { id: id },
+    });
+
+    if (!recurrence) {
+      throw new NotFoundException('The recurrence was not found!');
+    }
+
+    return recurrence;
   }
 
   async createRecurrence(
@@ -56,6 +73,42 @@ export class RecurrencesService {
     const r = await this.recurrencesRepo.save(newR);
 
     return r;
+  }
+
+  async updateRecurrence(data: Partial<Recurrences>, r_id: string) {
+    const r = await this.recurrencesRepo.findOne({ where: { id: r_id } });
+
+    if (!r) {
+      throw new NotFoundException('The recurrence was not found!');
+    }
+
+    Object.assign(r, data);
+
+    return this.recurrencesRepo.save(r);
+  }
+
+  async pauseRecurrence(r_id: string) {
+    const r = await this.recurrencesRepo.findOne({ where: { id: r_id } });
+
+    if (!r) {
+      throw new NotFoundException('The recurrence was not found!');
+    }
+
+    const paused = await this.recurrencesRepo.update(r_id, { active: false });
+
+    return paused;
+  }
+
+  async playRecurrence(r_id: string) {
+    const r = await this.recurrencesRepo.findOne({ where: { id: r_id } });
+
+    if (!r) {
+      throw new NotFoundException('The recurrence was not found!');
+    }
+
+    const resume = await this.recurrencesRepo.update(r_id, { active: true });
+
+    return resume;
   }
 
   async deleteRecurrence(id: string): Promise<DeleteResult | null> {
