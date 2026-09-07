@@ -1,6 +1,6 @@
 import { IsEnum, IsOptional } from 'class-validator';
 
-enum TransactionPeriod {
+export enum TransactionPeriod {
   TODAY = 'today',
   WEEK = 'week',
   MONTH = 'month',

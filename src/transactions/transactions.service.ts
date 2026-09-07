@@ -9,7 +9,10 @@ import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
 import { Recurrences } from 'src/recurrences/entities/recurrences.entity';
-import { TransactionFilterDto } from './transaction-filters.dto';
+import {
+  TransactionFilterDto,
+  TransactionPeriod,
+} from './transaction-filters.dto';
 
 type TransactinObj = {
   id: string;
@@ -55,19 +58,19 @@ export class TransactionsService {
 
     let startDate: Date | undefined;
 
-    if (period === 'today') {
+    if (period === TransactionPeriod.TODAY) {
       startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     }
 
-    if (period === 'week') {
+    if (period === TransactionPeriod.WEEK) {
       startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     }
 
-    if (period === 'month') {
+    if (period === TransactionPeriod.MONTH) {
       startDate = new Date(now.getFullYear(), now.getMonth(), 1);
     }
 
-    if (period === 'year') {
+    if (period === TransactionPeriod.YEAR) {
       startDate = new Date(now.getFullYear(), 0, 1);
     }
 
