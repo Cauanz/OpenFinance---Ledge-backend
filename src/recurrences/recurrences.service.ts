@@ -30,7 +30,6 @@ export class RecurrencesService {
   constructor(
     @InjectRepository(Recurrences)
     private recurrencesRepo: Repository<Recurrences>,
-    // private usersRepo: Repository<User>,
     private readonly usersService: UsersService,
   ) {}
 
