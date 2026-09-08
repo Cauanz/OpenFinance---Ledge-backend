@@ -16,17 +16,16 @@ import { TransactionsService } from './transactions.service';
 import { TransactionFilterDto } from './transaction-filters.dto';
 
 @Controller('t')
+@UseGuards(AuthGuard)
 export class TransactionsController {
   constructor(private readonly transactionServices: TransactionsService) {}
 
   //ESSA ROTA SÓ PODE SER USADA PARA DEBUG JÁ QUE A ROTA REAL SÓ PODE PEGAR TODAS AS TRANSAÇÕES DE X USUÁRIO
-  @UseGuards(AuthGuard)
   @Get()
   getAllTransactions() {
     return this.transactionServices.getAllTransactions();
   }
 
-  @UseGuards(AuthGuard)
   @Get('u/:user_id')
   getUserTransactions(@Param('user_id') user_id: string) {
     if (!user_id) {
@@ -35,7 +34,6 @@ export class TransactionsController {
     return this.transactionServices.getUserTransactions(user_id);
   }
 
-  @UseGuards(AuthGuard)
   @Get('s/:t_id')
   getTransaction(@Param('t_id') t_id: string) {
     if (!t_id) {
@@ -44,13 +42,11 @@ export class TransactionsController {
     return this.transactionServices.getTransaction(t_id);
   }
 
-  @UseGuards(AuthGuard)
   @Post('c')
   createTransaction(@Body() bodyData, @Req() requestData) {
     return this.transactionServices.createTransaction(bodyData, requestData);
   }
 
-  @UseGuards(AuthGuard)
   @Patch(':id')
   editTransaction(
     @Body() data: Record<string, any>,
@@ -67,7 +63,6 @@ export class TransactionsController {
     return this.transactionServices.findall(filters);
   }
 
-  @UseGuards(AuthGuard)
   @Delete('d/:t_id')
   deleteTransaction(@Param('t_id') t_id: string) {
     if (!t_id) {

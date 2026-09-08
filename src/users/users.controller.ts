@@ -11,15 +11,21 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from './users.service';
+import { User } from './entities/user.entity';
+
+type RequestType = {
+  IncomingMessage: Promise<object>;
+  user: User;
+};
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private UserService: UsersService) {}
 
-  @UseGuards(AuthGuard)
   @Get('/u')
-  getProfile(@Request() req) {
-    const user = this.UserService.findById(req.id);
+  getProfile(@Request() req: RequestType) {
+    const user = this.UserService.findById(req.user.id);
     return user;
   }
 
