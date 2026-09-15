@@ -30,7 +30,7 @@ export class AuthService {
     username: string,
     email: string,
     password: string,
-  ): Promise<any> {
+  ): Promise<void | Error> {
     //TODO - DEFINIR TIPO PARA O RETORNO DISSO
     const user = await this.userService.findByEmail(email);
 
@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   //TODO - DEFINIR TIPO PARA O RETORNO DISSO
-  async signIn(email: string, password: string): Promise<any> {
+  async signIn(email: string, password: string): Promise<object | Error> {
     const user = await this.validateUser(email, password);
 
     if (!user) {
