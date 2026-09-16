@@ -31,7 +31,6 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<void | Error> {
-    //TODO - DEFINIR TIPO PARA O RETORNO DISSO
     const user = await this.userService.findByEmail(email);
 
     if (user) {
@@ -41,7 +40,6 @@ export class AuthService {
     await this.userService.create(email, username, password);
   }
 
-  //TODO - DEFINIR TIPO PARA O RETORNO DISSO
   async signIn(email: string, password: string): Promise<object | Error> {
     const user = await this.validateUser(email, password);
 

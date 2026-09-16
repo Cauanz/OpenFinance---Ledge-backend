@@ -21,7 +21,9 @@ import { ConfigModule } from '@nestjs/config';
     UsersModule,
     RecurrencesModule,
     TransactionsModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
