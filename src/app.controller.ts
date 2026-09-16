@@ -14,4 +14,11 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get()
+  getSecret(): string | undefined {
+    const secret = this.configService.get<string>(process.env.SECRET);
+
+    return secret;
+  }
 }

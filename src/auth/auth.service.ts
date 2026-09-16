@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -37,7 +41,18 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    await this.userService.create(email, username, password);
+    const createdUser = await this.userService.create(
+      email,
+      username,
+      password,
+    );
+
+    //TODO - FAZER ISSO DIREITO
+    if (!createdUser) {
+      throw new NotFoundException('There was an error creating the user!');
+    }
+
+    return;
   }
 
   async signIn(email: string, password: string): Promise<object | Error> {
