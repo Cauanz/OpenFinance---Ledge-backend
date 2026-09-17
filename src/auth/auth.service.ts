@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -6,12 +7,14 @@ import {
 import { UsersService } from 'src/users/users.service';
 import bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { AppService } from 'src/app.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
+    private appService: AppService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -38,7 +41,7 @@ export class AuthService {
     const user = await this.userService.findByEmail(email);
 
     if (user) {
-      throw new UnauthorizedException();
+      throw new ConflictException('User already exists.');
     }
 
     const createdUser = await this.userService.create(
@@ -47,7 +50,6 @@ export class AuthService {
       password,
     );
 
-    //TODO - FAZER ISSO DIREITO
     if (!createdUser) {
       throw new NotFoundException('There was an error creating the user!');
     }
