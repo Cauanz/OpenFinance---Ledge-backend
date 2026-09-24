@@ -11,21 +11,25 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
 
 type RequestType = {
   IncomingMessage: Promise<object>;
-  user: User;
+  user: {
+    id: string;
+    username: string;
+    iat: number;
+    exp: number;
+  };
 };
 
 @Controller('users')
 @UseGuards(AuthGuard)
 export class UsersController {
-  constructor(private UserService: UsersService) {}
+  constructor(private userService: UsersService) {}
 
   @Get('/u')
   getProfile(@Request() req: RequestType) {
-    const user = this.UserService.findById(req.user.id);
+    const user = this.userService.findById(req.user.id);
     return user;
   }
 
@@ -38,11 +42,11 @@ export class UsersController {
       throw new NotFoundException('User ID not found!');
     }
 
-    return this.UserService.updateUser(bodyData, u_id);
+    return this.userService.updateUser(bodyData, u_id);
   }
 
   @Delete('/d/:u_id')
   deleteUser(@Param('u_id') u_id: string) {
-    return this.UserService.deleteUser(u_id);
+    return this.userService.deleteUser(u_id);
   }
 }

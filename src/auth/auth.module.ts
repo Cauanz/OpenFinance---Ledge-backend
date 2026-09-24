@@ -8,10 +8,9 @@ import { AppService } from 'src/app.service';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, AppService],
   imports: [
     UsersModule,
-    AppService,
     JwtModule.register({
       global: true,
       secret: process.env.SECRET,
