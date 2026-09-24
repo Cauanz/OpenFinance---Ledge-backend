@@ -8,6 +8,7 @@ import { UsersService } from 'src/users/users.service';
 import bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { AppService } from 'src/app.service';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +38,7 @@ export class AuthService {
     username: string,
     email: string,
     password: string,
-  ): Promise<void | Error> {
+  ): Promise<User | void> {
     const user = await this.userService.findByEmail(email);
 
     if (user) {
@@ -54,10 +55,10 @@ export class AuthService {
       throw new NotFoundException('There was an error creating the user!');
     }
 
-    return;
+    return createdUser;
   }
 
-  async signIn(email: string, password: string): Promise<object | Error> {
+  async signIn(email: string, password: string): Promise<object> {
     const user = await this.validateUser(email, password);
 
     if (!user) {

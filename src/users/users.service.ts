@@ -32,7 +32,11 @@ export class UsersService {
     });
   }
 
-  async create(email: string, username: string, password: string) {
+  async create(
+    email: string,
+    username: string,
+    password: string,
+  ): Promise<User | null> {
     const salt = genSaltSync(10);
     const hashPass = hashSync(password, salt);
 
@@ -44,7 +48,7 @@ export class UsersService {
       recurrences: [],
     });
 
-    await this.usersRepository.save(user);
+    return await this.usersRepository.save(user);
   }
 
   async updateUser(bodyData: Partial<User>, id: string) {

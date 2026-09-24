@@ -20,7 +20,7 @@ export class AuthController {
     );
   }
 
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(201)
   @Post('signin')
   signIn(@Body() signInData: Record<string, any>) {
     return this.authService.signIn(signInData.email, signInData.password);
