@@ -3,22 +3,22 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
+  ParseUUIDPipe,
   Patch,
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from './users.service';
+import { AuthGuard } from '../auth/auth.guard';
 
 type RequestType = {
   IncomingMessage: Promise<object>;
   user: {
-    id: string;
-    username: string;
-    iat: number;
-    exp: number;
+    id?: string;
+    username?: string;
+    iat?: number;
+    exp?: number;
   };
 };
 
@@ -27,7 +27,7 @@ type RequestType = {
 export class UsersController {
   constructor(private userService: UsersService) {}
 
-  @Get('/u')
+  @Get('/me')
   getProfile(@Request() req: RequestType) {
     const user = this.userService.findById(req.user.id);
     return user;
@@ -36,16 +36,12 @@ export class UsersController {
   @Patch('/:u_id')
   updateUser(
     @Body() bodyData: Record<string, any>,
-    @Param('u_id') u_id: string,
+    @Param('u_id', ParseUUIDPipe) u_id: string,
   ) {
-    if (!u_id) {
-      throw new NotFoundException('User ID not found!');
-    }
-
     return this.userService.updateUser(bodyData, u_id);
   }
 
-  @Delete('/d/:u_id')
+  @Delete('/:u_id')
   deleteUser(@Param('u_id') u_id: string) {
     return this.userService.deleteUser(u_id);
   }

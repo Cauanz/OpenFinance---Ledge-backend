@@ -3,9 +3,9 @@ import { TransactionsController } from './transactions.controller';
 import { TransactionsService } from './transactions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transactions } from './entities/transaction.entity';
-import { UsersService } from 'src/users/users.service';
-import { UsersModule } from 'src/users/users.module';
-import { RecurrencesModule } from 'src/recurrences/recurrences.module';
+import { UsersService } from '../users/users.service';
+import { UsersModule } from '../users/users.module';
+import { RecurrencesModule } from '../recurrences/recurrences.module';
 
 @Module({
   controllers: [TransactionsController],

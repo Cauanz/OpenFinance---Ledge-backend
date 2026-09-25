@@ -36,7 +36,7 @@ export class UsersService {
     email: string,
     username: string,
     password: string,
-  ): Promise<User | null> {
+  ): Promise<User> {
     const salt = genSaltSync(10);
     const hashPass = hashSync(password, salt);
 

@@ -11,9 +11,9 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { TransactionsService } from './transactions.service';
 import { TransactionFilterDto } from './transaction-filters.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('t')
 @UseGuards(AuthGuard)
