@@ -15,7 +15,7 @@ import { AuthGuard } from '../auth/auth.guard';
 type RequestType = {
   IncomingMessage: Promise<object>;
   user: {
-    id?: string;
+    id: string;
     username?: string;
     iat?: number;
     exp?: number;

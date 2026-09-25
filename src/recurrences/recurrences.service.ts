@@ -6,8 +6,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Recurrences } from './entities/recurrences.entity';
 import { Repository } from 'typeorm';
-import { UsersService } from 'src/users/users.service';
 import { DeleteResult } from 'typeorm/browser';
+import { UsersService } from '../users/users.service';
 
 type AuthObj = {
   user: {

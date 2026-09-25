@@ -1,5 +1,3 @@
-import { Recurrences } from 'src/recurrences/entities/recurrences.entity';
-import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +6,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+import { Recurrences } from '../../recurrences/entities/recurrences.entity';
 
 @Entity()
 export class Transactions {

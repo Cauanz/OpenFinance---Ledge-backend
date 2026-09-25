@@ -10,8 +10,8 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { RecurrencesService } from './recurrences.service';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('recurrences')
 @UseGuards(AuthGuard)

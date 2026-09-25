@@ -6,13 +6,13 @@ import {
 import { Transactions } from './entities/transaction.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UsersService } from 'src/users/users.service';
-import { User } from 'src/users/entities/user.entity';
-import { Recurrences } from 'src/recurrences/entities/recurrences.entity';
 import {
   TransactionFilterDto,
   TransactionPeriod,
 } from './transaction-filters.dto';
+import { User } from '../users/entities/user.entity';
+import { Recurrences } from '../recurrences/entities/recurrences.entity';
+import { UsersService } from '../users/users.service';
 
 type TransactinObj = {
   id: string;
