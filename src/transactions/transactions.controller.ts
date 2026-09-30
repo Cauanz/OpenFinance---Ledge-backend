@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -11,14 +12,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { TransactionsService } from './transactions.service';
+import { TransactionServices } from './transactions.service';
 import { TransactionFilterDto } from './transaction-filters.dto';
 import { AuthGuard } from '../auth/auth.guard';
 
-@Controller('t')
+@Controller('transactions')
 @UseGuards(AuthGuard)
 export class TransactionsController {
-  constructor(private readonly transactionServices: TransactionsService) {}
+  constructor(private readonly transactionServices: TransactionServices) {}
 
   //ESSA ROTA SÓ PODE SER USADA PARA DEBUG JÁ QUE A ROTA REAL SÓ PODE PEGAR TODAS AS TRANSAÇÕES DE X USUÁRIO
   @Get()
@@ -26,7 +27,7 @@ export class TransactionsController {
     return this.transactionServices.getAllTransactions();
   }
 
-  @Get('u/:user_id')
+  @Get('user/:user_id')
   getUserTransactions(@Param('user_id') user_id: string) {
     if (!user_id) {
       throw new NotFoundException('Missing Id!');
@@ -34,15 +35,15 @@ export class TransactionsController {
     return this.transactionServices.getUserTransactions(user_id);
   }
 
-  @Get('s/:t_id')
+  @Get('/:t_id')
   getTransaction(@Param('t_id') t_id: string) {
     if (!t_id) {
-      throw new NotFoundException('Missing Id!');
+      throw new BadRequestException('Missing Id!');
     }
     return this.transactionServices.getTransaction(t_id);
   }
 
-  @Post('c')
+  @Post()
   createTransaction(@Body() bodyData, @Req() requestData) {
     return this.transactionServices.createTransaction(bodyData, requestData);
   }
@@ -53,20 +54,20 @@ export class TransactionsController {
     @Param('id') t_id: string,
   ) {
     if (!t_id) {
-      throw new NotFoundException('Missing Id!');
+      throw new BadRequestException('Missing Id!');
     }
     return this.transactionServices.updateTransaction(t_id, data);
   }
 
-  @Get()
+  @Get('filters')
   findAll(@Query() filters: TransactionFilterDto) {
-    return this.transactionServices.findall(filters);
+    return this.transactionServices.findallfiltered(filters);
   }
 
-  @Delete('d/:t_id')
+  @Delete(':t_id')
   deleteTransaction(@Param('t_id') t_id: string) {
     if (!t_id) {
-      throw new NotFoundException('Missing Id!');
+      throw new BadRequestException('Missing Id!');
     }
     return this.transactionServices.deleteTransaction(t_id);
   }

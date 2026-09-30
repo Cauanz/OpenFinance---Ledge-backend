@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -42,7 +43,7 @@ type CreateTransactionBody = {
 };
 
 @Injectable()
-export class TransactionsService {
+export class TransactionServices {
   constructor(
     @InjectRepository(Transactions)
     private transactionsRepo: Repository<Transactions>,
@@ -51,7 +52,7 @@ export class TransactionsService {
     private readonly usersService: UsersService,
   ) {}
 
-  async findall(filters: TransactionFilterDto) {
+  async findallfiltered(filters: TransactionFilterDto) {
     const { period } = filters;
 
     const now = new Date();
@@ -102,7 +103,7 @@ export class TransactionsService {
     });
   }
 
-  async createTransaction(reqData: CreateTransactionBody, bodyData: AuthObj) {
+  async createTransaction(bodyData: AuthObj, reqData: CreateTransactionBody) {
     const user = await this.usersService.findByUsername(bodyData.user.username);
 
     if (!user) {
@@ -130,7 +131,7 @@ export class TransactionsService {
     const t = await this.transactionsRepo.findOne({ where: { id } });
 
     if (!t) {
-      throw new NotFoundException('Transaction not found!');
+      throw new BadRequestException('Transaction not found!');
     }
 
     Object.assign(t, data);
