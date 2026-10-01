@@ -43,7 +43,7 @@ type CreateTransactionBody = {
 };
 
 @Injectable()
-export class TransactionServices {
+export class TransactionsService {
   constructor(
     @InjectRepository(Transactions)
     private transactionsRepo: Repository<Transactions>,
@@ -82,7 +82,7 @@ export class TransactionServices {
     });
   }
 
-  async getAllTransactions(): Promise<Transactions[] | null> {
+  async getAllTransactions(): Promise<Transactions[]> {
     return this.transactionsRepo.find();
   }
 
@@ -103,7 +103,7 @@ export class TransactionServices {
     });
   }
 
-  async createTransaction(bodyData: AuthObj, reqData: CreateTransactionBody) {
+  async createTransaction(reqData: CreateTransactionBody, bodyData: AuthObj) {
     const user = await this.usersService.findByUsername(bodyData.user.username);
 
     if (!user) {
