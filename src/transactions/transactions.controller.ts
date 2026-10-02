@@ -15,6 +15,24 @@ import { TransactionsService } from './transactions.service';
 import { TransactionFilterDto } from './transaction-filters.dto';
 import { AuthGuard } from '../auth/auth.guard';
 
+type AuthenticatedUser = {
+  id: string;
+  username: string;
+};
+
+type AuthenticatedRequest = Request & {
+  user: AuthenticatedUser;
+};
+
+type CreateTransactionBody = {
+  title: string;
+  amount: number;
+  type: string;
+  date: Date;
+  status: string;
+  recurrence_id: string | null;
+};
+
 @Controller('transactions')
 @UseGuards(AuthGuard)
 export class TransactionsController {
@@ -48,7 +66,10 @@ export class TransactionsController {
   }
 
   @Post()
-  createTransaction(@Body() bodyData, @Req() requestData) {
+  createTransaction(
+    @Body() bodyData: CreateTransactionBody,
+    @Req() requestData: AuthenticatedRequest,
+  ) {
     return this.transactionsService.createTransaction(bodyData, requestData);
   }
 
