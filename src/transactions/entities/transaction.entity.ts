@@ -19,7 +19,10 @@ export class Transactions {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
-  user_id!: User;
+  user!: User;
+
+  @Column({ name: 'user_id', select: false })
+  user_id!: string;
 
   @Column()
   title!: string;

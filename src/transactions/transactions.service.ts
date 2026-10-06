@@ -17,7 +17,8 @@ import { UsersService } from '../users/users.service';
 
 type TransactinObj = {
   id: string;
-  user_id: User;
+  user: User;
+  user_id: string;
   title: string;
   amount: number;
   type: string;
@@ -95,9 +96,7 @@ export class TransactionsService {
   async getUserTransactions(userId: string): Promise<Transactions[]> {
     return this.transactionsRepo.find({
       where: {
-        user_id: {
-          id: userId,
-        },
+        user_id: userId,
       },
       relations: ['user_id', 'recurrence_id'],
     });
@@ -118,7 +117,7 @@ export class TransactionsService {
 
     const newT: TransactinObj = this.transactionsRepo.create({
       ...reqData,
-      user_id: user,
+      user_id: user.id,
       recurrence_id: recurrence,
     });
 
