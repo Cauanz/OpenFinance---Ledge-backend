@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/ledge logo.png" width="100" alt="Ledge Logo" />
+  <img src="./assets/Logo Ledge API Financeira.png" width="100" alt="Ledge Logo" />
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
@@ -51,7 +51,6 @@ $ mau deploy
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
 ## Resources
-
 
 ## License
 
